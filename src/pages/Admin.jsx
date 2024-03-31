@@ -1,5 +1,7 @@
+import AdminHome from "../components/admin/AdminHome";
+
 const Admin = () => {
-  return <div>Admin</div>;
+  return <AdminHome />;
 };
 
 export default Admin;

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -10,8 +12,20 @@ const schema = yup
   .required();
 
 const AdminSignin = () => {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:3000/admin/signin", data);
+
+      if (res.data.token) {
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <form
@@ -21,7 +35,7 @@ const AdminSignin = () => {
         <input
           placeholder="email"
           type="email"
-          {...register("email", { required: true, maxLength: 20 })}
+          {...register("username", { required: true, maxLength: 20 })}
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         />
         <input
